@@ -1,7 +1,7 @@
 import { getGradeExpirationRemainingTime } from '../date';
 
 describe('getGradeExpirationRemainingTime', () => {
-  // Mock current time for consistent testing
+  // mock now time 설정
   const mockNow = new Date('2025-06-01T10:00:00');
 
   beforeEach(() => {
