@@ -1,6 +1,6 @@
 {
   "name": "@kiwooso-front-end/utils",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Kiwooso front-end utility functions",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
@@ -17,7 +17,10 @@
   },
   "keywords": [
     "kiwooso",
-    "utils"
+    "utils",
+    "front-end",
+    "키우소",
+    "키우소 프론트엔드"
   ],
   "author": "Kiwooso",
   "license": "MIT",
