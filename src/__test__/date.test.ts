@@ -1,4 +1,4 @@
-import { getGradeExpirationRemainingTime } from '../date';
+import { getGradeExpirationRemainingTime, formatDate } from '../date';
 
 describe('getGradeExpirationRemainingTime', () => {
   // mock now time 설정
@@ -144,6 +144,85 @@ describe('getGradeExpirationRemainingTime', () => {
     it('잘못된 날짜 문자열은 만료 메시지 반환', () => {
       const endDate = 'invalid-date';
       expect(getGradeExpirationRemainingTime(endDate)).toBe('');
+    });
+  });
+});
+
+describe('formatDate', () => {
+  const testDate = '2025-01-15T14:30:45';
+  const testDateWithoutTime = '2025-01-15';
+
+  describe('한국어 포맷', () => {
+    it('YYYY년 MM월 DD일 포맷으로 변환', () => {
+      expect(formatDate(testDate, 'YYYY년 MM월 DD일')).toBe('2025년 01월 15일');
+    });
+
+    it('YY년 MM월 DD일 포맷으로 변환 (2자리 연도)', () => {
+      expect(formatDate(testDate, 'YY년 MM월 DD일')).toBe('25년 01월 15일');
+    });
+
+    it('YYYY년 MM월 DD일 HH시 MM분 포맷으로 변환', () => {
+      expect(formatDate(testDate, 'YYYY년 MM월 DD일 HH시 MM분')).toBe(
+        '2025년 01월 15일 14시 30분'
+      );
+    });
+  });
+
+  describe('하이픈(-) 구분자 포맷', () => {
+    it('YYYY-MM-DD 포맷으로 변환', () => {
+      expect(formatDate(testDate, 'YYYY-MM-DD')).toBe('2025-01-15');
+    });
+
+    it('YYYY-MM-DD HH:MM 포맷으로 변환', () => {
+      expect(formatDate(testDate, 'YYYY-MM-DD HH:MM')).toBe('2025-01-15 14:30');
+    });
+  });
+
+  describe('점(.) 구분자 포맷', () => {
+    it('YYYY.MM.DD 포맷으로 변환', () => {
+      expect(formatDate(testDate, 'YYYY.MM.DD')).toBe('2025.01.15');
+    });
+
+    it('YY.MM.DD 포맷으로 변환 (2자리 연도)', () => {
+      expect(formatDate(testDate, 'YY.MM.DD')).toBe('25.01.15');
+    });
+  });
+
+  describe('슬래시(/) 구분자 포맷', () => {
+    it('MM/DD/YYYY 포맷으로 변환 (미국식)', () => {
+      expect(formatDate(testDate, 'MM/DD/YYYY')).toBe('01/15/2025');
+    });
+
+    it('DD/MM/YYYY 포맷으로 변환 (유럽식)', () => {
+      expect(formatDate(testDate, 'DD/MM/YYYY')).toBe('15/01/2025');
+    });
+  });
+
+  describe('에러 케이스', () => {
+    it('빈 문자열 입력 시 빈 문자열 반환', () => {
+      expect(formatDate('', 'YYYY-MM-DD')).toBe('');
+    });
+
+    it('유효하지 않은 날짜 문자열 입력 시 빈 문자열 반환', () => {
+      expect(formatDate('invalid-date', 'YYYY-MM-DD')).toBe('');
+    });
+
+    it('연도 범위 초과 시 빈 문자열 반환', () => {
+      expect(formatDate('12345', 'YYYY-MM-DD')).toBe(''); // 연도 범위 초과
+      expect(formatDate('1800-01-01', 'YYYY-MM-DD')).toBe(''); // 너무 과거
+      expect(formatDate('2200-01-01', 'YYYY-MM-DD')).toBe(''); // 너무 미래
+    });
+  });
+
+  describe('패딩 확인', () => {
+    it('한 자리 월/일/시/분/초가 0으로 패딩되는지 확인', () => {
+      const singleDigitDate = '2025-01-05T09:08:07';
+      expect(formatDate(singleDigitDate, 'YYYY-MM-DD HH:MM:SS')).toBe(
+        '2025-01-05 09:08:07'
+      );
+      expect(formatDate(singleDigitDate, 'YY년 MM월 DD일')).toBe(
+        '25년 01월 05일'
+      );
     });
   });
 });
