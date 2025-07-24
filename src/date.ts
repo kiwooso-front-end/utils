@@ -75,6 +75,7 @@ type DateFormat =
   | 'YY년 MM월 DD일'
   | 'YYYY년 MM월 DD일 HH시 MM분'
   | 'YYYY년 MM월 DD일 HH시 MM분 SS초'
+  | 'YYYY년 MM월 DD일 HH:MM'
   | 'YYYY-MM-DD'
   | 'YYYY-MM-DD HH:MM'
   | 'YYYY-MM-DD HH:MM:SS'
@@ -140,6 +141,8 @@ export function formatDate(dateString: string, format: DateFormat): string {
       return `${year}년 ${month}월 ${day}일 ${hours}시 ${minutes}분`;
     case 'YYYY년 MM월 DD일 HH시 MM분 SS초':
       return `${year}년 ${month}월 ${day}일 ${hours}시 ${minutes}분 ${seconds}초`;
+    case 'YYYY년 MM월 DD일 HH:MM':
+      return `${year}년 ${month}월 ${day}일 ${hours}:${minutes}`;
     case 'YYYY-MM-DD':
       return `${year}-${month}-${day}`;
     case 'YYYY-MM-DD HH:MM':

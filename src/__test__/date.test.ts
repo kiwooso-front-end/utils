@@ -166,6 +166,12 @@ describe('formatDate', () => {
         '2025년 01월 15일 14시 30분'
       );
     });
+
+    it('YYYY년 MM월 DD일 HH:MM 포맷으로 변환', () => {
+      expect(formatDate(testDate, 'YYYY년 MM월 DD일 HH:MM')).toBe(
+        '2025년 01월 15일 14:30'
+      );
+    });
   });
 
   describe('하이픈(-) 구분자 포맷', () => {
