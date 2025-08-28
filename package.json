@@ -1,6 +1,6 @@
 {
   "name": "@kiwooso-front-end/utils",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Kiwooso front-end utility functions",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
@@ -9,6 +9,23 @@
   "files": [
     "dist"
   ],
+  "exports": {
+    ".": {
+      "import": "./dist/index.esm.js",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./file": {
+      "import": "./dist/file.esm.js",
+      "require": "./dist/file.js",
+      "types": "./dist/file.d.ts"
+    },
+    "./date": {
+      "import": "./dist/date.esm.js",
+      "require": "./dist/date.js",
+      "types": "./dist/date.d.ts"
+    }
+  },
   "scripts": {
     "build": "rollup -c",
     "test": "jest",

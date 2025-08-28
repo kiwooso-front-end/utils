@@ -1,4 +1,4 @@
-import { FileValidator } from '../file';
+import { FileValidator } from '..';
 
 // 테스트 헬퍼 함수
 const createMockFile = (

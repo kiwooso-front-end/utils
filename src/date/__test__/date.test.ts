@@ -1,4 +1,4 @@
-import { getGradeExpirationRemainingTime, formatDate } from '../date';
+import { getGradeExpirationRemainingTime, formatDate } from '..';
 
 describe('getGradeExpirationRemainingTime', () => {
   // mock now time 설정
