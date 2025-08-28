@@ -9,6 +9,9 @@
   "files": [
     "dist"
   ],
+  "engines": {
+    "typescript": ">=5.0.0"
+  },
   "exports": {
     ".": {
       "import": "./dist/index.esm.js",
