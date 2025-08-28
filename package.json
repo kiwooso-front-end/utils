@@ -1,6 +1,6 @@
 {
   "name": "@kiwooso-front-end/utils",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Kiwooso front-end utility functions",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
