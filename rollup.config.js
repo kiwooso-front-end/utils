@@ -19,7 +19,12 @@ const jsConfigs = [
         format: 'esm',
       },
     ],
-    plugins: [typescript()],
+    plugins: [
+      typescript({
+        declaration: false, // 개별 dts 설정에서만 생성
+        declarationMap: false,
+      }),
+    ],
     external: ['react', 'react-dom'],
   },
 
@@ -37,7 +42,12 @@ const jsConfigs = [
         format: 'esm',
       },
     ],
-    plugins: [typescript()],
+    plugins: [
+      typescript({
+        declaration: false, // 개별 dts 설정에서만 생성
+        declarationMap: false,
+      }),
+    ],
     external: ['react', 'react-dom'],
   })),
 ];
