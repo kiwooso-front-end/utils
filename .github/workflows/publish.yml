@@ -42,102 +42,96 @@ jobs:
 
       - name: Notify Slack on Success
         if: success()
-        uses: slackapi/slack-github-action@v1.26.0
-        with:
-          payload-delimiter: '\n'
-          payload: |
-            {
-              "attachments": [
-                {
-                  "fallback": "🎉 NPM 배포 성공! Package: @kiwooso-front-end/utils, Version: ${{ github.ref_name }}",
-                  "pretext": "🎉 *NPM 배포가 성공적으로 완료되었습니다!*",
-                  "color": "#36a64f",
-                  "fields": [
-                    {
-                      "title": "Package",
-                      "value": "@kiwooso-front-end/utils",
-                      "short": true
-                    },
-                    {
-                      "title": "Version",
-                      "value": "${{ github.ref_name }}",
-                      "short": true
-                    },
-                    {
-                      "title": "작성자",
-                      "value": "${{ github.actor }}",
-                      "short": true
-                    },
-                    {
-                      "title": "Commit SHA",
-                      "value": "${{ github.sha }}",
-                      "short": true
-                    },
-                    {
-                      "title": "Links",
-                      "value": "<${{ github.event.release.html_url }}|📋 Release 보기> | <https://www.npmjs.com/package/@kiwooso-front-end/utils|📦 NPM 보기>",
-                      "short": false
-                    }
-                  ],
-                  "footer": "GitHub Actions",
-                  "footer_icon": "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
-                }
-              ]
-            }
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        run: |
+          curl -X POST ${{ secrets.SLACK_WEBHOOK_URL }} \
+          -H 'Content-Type: application/json' \
+          -d '{
+            "attachments": [
+              {
+                "fallback": "🎉 NPM 배포 성공! Package: @kiwooso-front-end/utils, Version: ${{ github.ref_name }}",
+                "pretext": "🎉 *NPM 배포가 성공적으로 완료되었습니다!*",
+                "color": "#36a64f",
+                "fields": [
+                  {
+                    "title": "Package",
+                    "value": "@kiwooso-front-end/utils",
+                    "short": true
+                  },
+                  {
+                    "title": "Version",
+                    "value": "${{ github.ref_name }}",
+                    "short": true
+                  },
+                  {
+                    "title": "작성자",
+                    "value": "${{ github.actor }}",
+                    "short": true
+                  },
+                  {
+                    "title": "Commit SHA",
+                    "value": "${{ github.sha }}",
+                    "short": true
+                  },
+                  {
+                    "title": "Links",
+                    "value": "<${{ github.event.release.html_url }}|📋 Release 보기> | <https://www.npmjs.com/package/@kiwooso-front-end/utils|📦 NPM 보기>",
+                    "short": false
+                  }
+                ],
+                "footer": "GitHub Actions",
+                "footer_icon": "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
+              }
+            ]
+          }'
 
       - name: Notify Slack on Failure
         if: failure()
-        uses: slackapi/slack-github-action@v1.26.0
-        with:
-          payload-delimiter: '\n'
-          payload: |
-            {
-              "attachments": [
-                {
-                  "fallback": "🚨 NPM 배포 실패! Package: @kiwooso-front-end/utils, Version: ${{ github.ref_name }}",
-                  "pretext": "🚨 *NPM 배포에 실패했습니다!* <!here>",
-                  "color": "#D00000",
-                  "fields": [
-                    {
-                      "title": "Package",
-                      "value": "@kiwooso-front-end/utils",
-                      "short": true
-                    },
-                    {
-                      "title": "Version",
-                      "value": "${{ github.ref_name }}",
-                      "short": true
-                    },
-                    {
-                      "title": "작성자",
-                      "value": "${{ github.actor }}",
-                      "short": true
-                    },
-                    {
-                      "title": "Branch",
-                      "value": "${{ github.ref }}",
-                      "short": true
-                    },
-                    {
-                      "title": "조치 필요",
-                      "value": "배포 담당자는 로그를 확인해주세요.",
-                      "short": false
-                    },
-                    {
-                      "title": "Actions Log",
-                      "value": "<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|🔍 로그 확인하기>",
-                      "short": false
-                    }
-                  ],
-                  "footer": "GitHub Actions",
-                  "footer_icon": "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
-                }
-              ]
-            }
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        run: |
+          curl -X POST ${{ secrets.SLACK_WEBHOOK_URL }} \
+          -H 'Content-Type: application/json' \
+          -d '{
+            "attachments": [
+              {
+                "fallback": "🚨 NPM 배포 실패! Package: @kiwooso-front-end/utils, Version: ${{ github.ref_name }}",
+                "pretext": "🚨 *NPM 배포에 실패했습니다!* <!here>",
+                "color": "#D00000",
+                "fields": [
+                  {
+                    "title": "Package",
+                    "value": "@kiwooso-front-end/utils",
+                    "short": true
+                  },
+                  {
+                    "title": "Version",
+                    "value": "${{ github.ref_name }}",
+                    "short": true
+                  },
+                  {
+                    "title": "작성자",
+                    "value": "${{ github.actor }}",
+                    "short": true
+                  },
+                  {
+                    "title": "Branch",
+                    "value": "${{ github.ref }}",
+                    "short": true
+                  },
+                  {
+                    "title": "조치 필요",
+                    "value": "배포 담당자는 로그를 확인해주세요.",
+                    "short": false
+                  },
+                  {
+                    "title": "Actions Log",
+                    "value": "<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|🔍 로그 확인하기>",
+                    "short": false
+                  }
+                ],
+                "footer": "GitHub Actions",
+                "footer_icon": "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
+              }
+            ]
+          }'
 
   notify-push:
     runs-on: ubuntu-latest
@@ -145,47 +139,44 @@ jobs:
 
     steps:
       - name: Notify Slack on Push
-        uses: slackapi/slack-github-action@v1.26.0
-        with:
-          payload-delimiter: '\n'
-          payload: |
-            {
-              "attachments": [
-                {
-                  "fallback": "📌 Main 브랜치 업데이트: ${{ github.event.head_commit.message }}",
-                  "pretext": "📌 *Main 브랜치에 새로운 커밋이 푸시되었습니다*",
-                  "color": "#0066cc",
-                  "fields": [
-                    {
-                      "title": "Repository",
-                      "value": "${{ github.repository }}",
-                      "short": true
-                    },
-                    {
-                      "title": "작성자",
-                      "value": "${{ github.actor }}",
-                      "short": true
-                    },
-                    {
-                      "title": "Commit Message",
-                      "value": "${{ github.event.head_commit.message }}",
-                      "short": false
-                    },
-                    {
-                      "title": "Commit SHA",
-                      "value": "${{ github.sha }}",
-                      "short": false
-                    },
-                    {
-                      "title": "Link",
-                      "value": "<${{ github.event.head_commit.url }}|🔗 커밋 보기>",
-                      "short": false
-                    }
-                  ],
-                  "footer": "GitHub Actions",
-                  "footer_icon": "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
-                }
-              ]
-            }
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        run: |
+          curl -X POST ${{ secrets.SLACK_WEBHOOK_URL }} \
+          -H 'Content-Type: application/json' \
+          -d '{
+            "attachments": [
+              {
+                "fallback": "📌 Main 브랜치 업데이트: ${{ github.event.head_commit.message }}",
+                "pretext": "📌 *Main 브랜치에 새로운 커밋이 푸시되었습니다*",
+                "color": "#0066cc",
+                "fields": [
+                  {
+                    "title": "Repository",
+                    "value": "${{ github.repository }}",
+                    "short": true
+                  },
+                  {
+                    "title": "작성자",
+                    "value": "${{ github.actor }}",
+                    "short": true
+                  },
+                  {
+                    "title": "Commit Message",
+                    "value": "${{ github.event.head_commit.message }}",
+                    "short": false
+                  },
+                  {
+                    "title": "Commit SHA",
+                    "value": "${{ github.sha }}",
+                    "short": false
+                  },
+                  {
+                    "title": "Link",
+                    "value": "<${{ github.event.head_commit.url }}|🔗 커밋 보기>",
+                    "short": false
+                  }
+                ],
+                "footer": "GitHub Actions",
+                "footer_icon": "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
+              }
+            ]
+          }'
