@@ -6,6 +6,7 @@
 
 export * from './date';
 export * from './file';
+export * from './k-cow';
 
 // 향후 추가될 유틸리티들을 위한 공간
 // export * from './string';
