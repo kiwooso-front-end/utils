@@ -44,6 +44,7 @@ jobs:
         if: success()
         uses: slackapi/slack-github-action@v1.26.0
         with:
+          payload-delimiter: '\n'
           payload: |
             {
               "attachments": [
@@ -90,6 +91,7 @@ jobs:
         if: failure()
         uses: slackapi/slack-github-action@v1.26.0
         with:
+          payload-delimiter: '\n'
           payload: |
             {
               "attachments": [
@@ -145,6 +147,7 @@ jobs:
       - name: Notify Slack on Push
         uses: slackapi/slack-github-action@v1.26.0
         with:
+          payload-delimiter: '\n'
           payload: |
             {
               "attachments": [
