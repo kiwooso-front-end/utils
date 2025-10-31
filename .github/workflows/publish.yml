@@ -46,45 +46,40 @@ jobs:
         with:
           payload: |
             {
-              "text": "✅ NPM 배포 성공!",
-              "blocks": [
+              "attachments": [
                 {
-                  "type": "header",
-                  "text": {
-                    "type": "plain_text",
-                    "text": "🎉 배포 완료!"
-                  }
-                },
-                {
-                  "type": "section",
+                  "fallback": "🎉 NPM 배포 성공! Package: @kiwooso-front-end/utils, Version: ${{ github.ref_name }}",
+                  "pretext": "🎉 *NPM 배포가 성공적으로 완료되었습니다!*",
+                  "color": "#36a64f",
                   "fields": [
                     {
-                      "type": "mrkdwn",
-                      "text": "*Package:*\n`@kiwooso-front-end/utils`"
+                      "title": "Package",
+                      "value": "@kiwooso-front-end/utils",
+                      "short": true
                     },
                     {
-                      "type": "mrkdwn",
-                      "text": "*Version:*\n`${{ github.ref_name }}`"
+                      "title": "Version",
+                      "value": "${{ github.ref_name }}",
+                      "short": true
                     },
                     {
-                      "type": "mrkdwn",
-                      "text": "*작성자:*\n${{ github.actor }}"
+                      "title": "작성자",
+                      "value": "${{ github.actor }}",
+                      "short": true
                     },
                     {
-                      "type": "mrkdwn",
-                      "text": "*Commit:*\n`${{ github.sha }}`"
+                      "title": "Commit SHA",
+                      "value": "${{ github.sha }}",
+                      "short": true
+                    },
+                    {
+                      "title": "Links",
+                      "value": "<${{ github.event.release.html_url }}|📋 Release 보기> | <https://www.npmjs.com/package/@kiwooso-front-end/utils|📦 NPM 보기>",
+                      "short": false
                     }
-                  ]
-                },
-                {
-                  "type": "divider"
-                },
-                {
-                  "type": "section",
-                  "text": {
-                    "type": "mrkdwn",
-                    "text": "<${{ github.event.release.html_url }}|📋 Release 보기> | <https://www.npmjs.com/package/@kiwooso-front-end/utils|📦 NPM 보기>"
-                  }
+                  ],
+                  "footer": "GitHub Actions",
+                  "footer_icon": "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
                 }
               ]
             }
@@ -97,28 +92,45 @@ jobs:
         with:
           payload: |
             {
-              "text": "❌ NPM 배포 실패",
-              "blocks": [
+              "attachments": [
                 {
-                  "type": "section",
-                  "text": {
-                    "type": "mrkdwn",
-                    "text": "🚨 *배포 실패*\n\n*Package:* `@kiwooso-front-end/utils`\n*Version:* `${{ github.ref_name }}`\n*Branch:* `${{ github.ref }}`"
-                  }
-                },
-                {
-                  "type": "section",
-                  "text": {
-                    "type": "mrkdwn",
-                    "text": "⚠️ <!here> 배포 담당자 확인 필요!"
-                  }
-                },
-                {
-                  "type": "section",
-                  "text": {
-                    "type": "mrkdwn",
-                    "text": "<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|🔍 로그 확인하기>"
-                  }
+                  "fallback": "🚨 NPM 배포 실패! Package: @kiwooso-front-end/utils, Version: ${{ github.ref_name }}",
+                  "pretext": "🚨 *NPM 배포에 실패했습니다!* <!here>",
+                  "color": "#D00000",
+                  "fields": [
+                    {
+                      "title": "Package",
+                      "value": "@kiwooso-front-end/utils",
+                      "short": true
+                    },
+                    {
+                      "title": "Version",
+                      "value": "${{ github.ref_name }}",
+                      "short": true
+                    },
+                    {
+                      "title": "작성자",
+                      "value": "${{ github.actor }}",
+                      "short": true
+                    },
+                    {
+                      "title": "Branch",
+                      "value": "${{ github.ref }}",
+                      "short": true
+                    },
+                    {
+                      "title": "조치 필요",
+                      "value": "배포 담당자는 로그를 확인해주세요.",
+                      "short": false
+                    },
+                    {
+                      "title": "Actions Log",
+                      "value": "<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|🔍 로그 확인하기>",
+                      "short": false
+                    }
+                  ],
+                  "footer": "GitHub Actions",
+                  "footer_icon": "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
                 }
               ]
             }
@@ -135,42 +147,40 @@ jobs:
         with:
           payload: |
             {
-              "text": "📌 Main 브랜치 업데이트",
-              "blocks": [
+              "attachments": [
                 {
-                  "type": "section",
-                  "text": {
-                    "type": "mrkdwn",
-                    "text": "*📌 Main 브랜치에 새로운 커밋이 푸시되었습니다*"
-                  }
-                },
-                {
-                  "type": "section",
+                  "fallback": "📌 Main 브랜치 업데이트: ${{ github.event.head_commit.message }}",
+                  "pretext": "📌 *Main 브랜치에 새로운 커밋이 푸시되었습니다*",
+                  "color": "#0066cc",
                   "fields": [
                     {
-                      "type": "mrkdwn",
-                      "text": "*Repository:*\n`${{ github.repository }}`"
+                      "title": "Repository",
+                      "value": "${{ github.repository }}",
+                      "short": true
                     },
                     {
-                      "type": "mrkdwn",
-                      "text": "*작성자:*\n${{ github.actor }}"
+                      "title": "작성자",
+                      "value": "${{ github.actor }}",
+                      "short": true
                     },
                     {
-                      "type": "mrkdwn",
-                      "text": "*Commit:*\n`${{ github.event.head_commit.message }}`"
+                      "title": "Commit Message",
+                      "value": "${{ github.event.head_commit.message }}",
+                      "short": false
                     },
                     {
-                      "type": "mrkdwn",
-                      "text": "*SHA:*\n`${{ github.sha }}`"
+                      "title": "Commit SHA",
+                      "value": "${{ github.sha }}",
+                      "short": false
+                    },
+                    {
+                      "title": "Link",
+                      "value": "<${{ github.event.head_commit.url }}|🔗 커밋 보기>",
+                      "short": false
                     }
-                  ]
-                },
-                {
-                  "type": "section",
-                  "text": {
-                    "type": "mrkdwn",
-                    "text": "<${{ github.event.head_commit.url }}|🔗 커밋 보기>"
-                  }
+                  ],
+                  "footer": "GitHub Actions",
+                  "footer_icon": "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
                 }
               ]
             }
