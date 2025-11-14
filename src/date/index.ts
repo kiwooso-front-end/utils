@@ -1,6 +1,14 @@
 /**
  * Date 관련 유틸리티 함수들
+ *
+ * @note 이 서비스는 한국(KST) 전용이며, 모든 날짜는 한국 시간 기준입니다.
+ * @note 서버 날짜 형식: "YYYY-MM-DDTHH:mm:ss.nnnnnnnnn" (타임존 정보 없음, KST 기준)
  */
+
+// 시간 변환 상수
+const MS_PER_MINUTE = 1000 * 60;
+const MS_PER_HOUR = MS_PER_MINUTE * 60;
+const MS_PER_DAY = MS_PER_HOUR * 24;
 
 /**
  * 목표 날짜까지 남은 시간을 계산하여 적절한 형식으로 반환하는 함수
@@ -9,22 +17,20 @@
  * - 24시간 이상: 일 단위로 표시 (반올림 적용)
  * - 24시간 미만: 시간/분 단위로 정확히 표시
  * - 반올림 방식: 0.5일(12시간) 기준으로 반올림
- *   예) 1일 12시간 → 2일, 1일 11시간 → 1일
+ * - 서비스는 한국 전용이며, 모든 날짜는 한국 시간(KST) 기준입니다
  *
- * @param endDate 목표 날짜와 시간 (string 또는 Date 객체)
- * @returns 남은 기간 문자열 또는 만료 메시지
+ * @param endDate 서버에서 받은 만료일 문자열 (KST 기준, ISO 8601 형식)
+ *                예: "2025-11-30T23:59:59.999999999"
+ * @returns 남은 기간 문자열 또는 만료 메시지, 유효하지 않은 날짜인 경우 빈 문자열
  *
  * @example
- * 기준 '2025-06-01T10:00:00'
  * getGradeExpirationRemainingTime('2025-07-01T10:00:00')
  * // "등급 만료까지 30일 남았습니다."
  *
  * getGradeExpirationRemainingTime('2025-06-02T15:30:00')
  * // "등급 만료까지 5시간 30분 남았습니다."
  */
-export function getGradeExpirationRemainingTime(
-  endDate: string | Date
-): string {
+export function getGradeExpirationRemainingTime(endDate: string): string {
   const now = new Date();
   const end = new Date(endDate);
 
@@ -42,18 +48,18 @@ export function getGradeExpirationRemainingTime(
   }
 
   // 전체 시간을 시간 단위로 변환
-  const totalHours = differenceInTime / (1000 * 60 * 60);
+  const totalHours = differenceInTime / MS_PER_HOUR;
 
   // 24시간 이상인 경우: 일 단위로 표시 (반올림 적용)
   if (totalHours >= 24) {
-    const differenceInDays = Math.round(totalHours / 24);
+    // 초 단위까지 고려한 정확한 반올림
+    const differenceInDays = Math.round(differenceInTime / MS_PER_DAY);
     return `등급 만료까지 ${differenceInDays}일 남았습니다.`;
   }
 
   // 24시간 미만인 경우: 시간/분 단위로 표시
   const hours = Math.floor(totalHours);
-  const remainingMinutes = (differenceInTime % (1000 * 60 * 60)) / (1000 * 60);
-  const minutes = Math.floor(remainingMinutes);
+  const minutes = Math.floor((differenceInTime % MS_PER_HOUR) / MS_PER_MINUTE);
 
   // 1시간 이상인 경우
   if (hours > 0) {
@@ -64,7 +70,12 @@ export function getGradeExpirationRemainingTime(
   }
 
   // 1시간 미만인 경우: 분 단위로만 표시
-  return `등급 만료까지 ${minutes}분 남았습니다.`;
+  if (minutes > 0) {
+    return `등급 만료까지 ${minutes}분 남았습니다.`;
+  }
+
+  // 1분 미만인 경우
+  return '등급 만료까지 1분 미만 남았습니다.';
 }
 
 /**
@@ -91,6 +102,7 @@ type DateFormat =
  * 다양한 날짜 포맷을 지원하는 유틸리티 함수입니다.
  * 빈 문자열이나 유효하지 않은 날짜가 입력되면 빈 문자열을 반환합니다.
  * 연도는 1900~2100 범위만 허용합니다.
+ * 서비스는 한국 전용이며, 모든 날짜는 한국 시간(KST) 기준입니다.
  *
  * @param dateString 변환할 날짜 문자열 (ISO 8601 형식 권장)
  * @param format 출력할 날짜 포맷
@@ -105,12 +117,6 @@ type DateFormat =
  *
  * formatDate('2024-01-15T14:30:00', 'YYYY-MM-DD HH:MM')
  * // "2024-01-15 14:30"
- *
- * formatDate('', 'YYYY-MM-DD')
- * // ""
- *
- * formatDate('12345', 'YYYY-MM-DD')
- * // "" (연도 범위 초과)
  */
 export function formatDate(dateString: string, format: DateFormat): string {
   if (!dateString) return '';
@@ -122,7 +128,7 @@ export function formatDate(dateString: string, format: DateFormat): string {
 
   const year = date.getFullYear();
 
-  // 비현실적인 연도 범위 체크 (예: 1900~2100)
+  // 비현실적인 연도 범위 체크
   if (year < 1900 || year > 2100) return '';
 
   const yearShort = String(year).slice(-2);
